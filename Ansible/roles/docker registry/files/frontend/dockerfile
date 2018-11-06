@@ -1,0 +1,8 @@
+# technicalTestBack
+FROM node:latest
+
+WORKDIR /home/node/app
+COPY . .
+ENV BACKEND_URL=http://backend:8080
+
+RUN npm install

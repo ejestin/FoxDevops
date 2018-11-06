@@ -1,0 +1,38 @@
+---
+# tasks file for docker registry / frontend image
+
+- name: Create repo for code frontend if not already present
+  file:
+    path: /usr/code/frontend
+    state: directory
+    recurse: yes
+    mode: 5755
+  become: yes
+
+- name: copy code in place
+  copy:
+    src: frontend/
+    dest: /usr/code/frontend/
+
+- name : build frontend in order to get image
+  command: docker build .
+  args:
+    chdir: /usr/code/frontend
+  become: yes
+
+- name: get image ID
+  command: docker images
+  register: frontEndImg
+  become: yes
+
+- name: debug image ID
+  debug:
+    msg: "frontend image ID : {{ frontEndImg.stdout_lines[1].split()[2] }}"
+
+- name: tag frontend image
+  command: docker tag "{{ frontEndImg.stdout_lines[1].split()[2] }}" localhost:5000/technicaltestfront
+  become: yes
+
+- name: push frontend image
+  command: docker push localhost:5000/technicaltestfront
+  become: yes

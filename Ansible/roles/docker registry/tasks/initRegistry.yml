@@ -1,0 +1,11 @@
+---
+# tasks file for docker registry / registry initialisation
+
+- name: verify if registry exists
+  shell: docker service inspect foxIntelRegistry | wc -l
+  register: countLines
+
+- name: create the registry
+  command: docker service create --name foxIntelRegistry --publish 5000:5000 registry:2 
+  when: countLines.stdout|int < 10
+  become: yes

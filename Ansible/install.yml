@@ -1,0 +1,22 @@
+# Install docker on each machine
+- hosts : all
+  roles:
+    - docker
+  become: yes
+
+# Create a Highly Available Docker Swarm cluster  
+- hosts: manager
+  roles:
+    - swarm manager
+
+# Join the Docker Swarm cluster for the workers
+- hosts: workers
+  roles:
+    - swarm workers
+
+# Deploy the provided application into the cluster
+- hosts: manager
+  roles:
+    - docker registry
+    - docker services  
+

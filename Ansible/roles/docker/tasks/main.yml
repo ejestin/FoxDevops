@@ -1,0 +1,56 @@
+---
+# tasks file for foxIntel
+
+- name: Remove all docker packages
+  yum:
+    name: 
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-selinux
+      - docker-engine-selinux
+      - docker-engine
+    state: absent
+
+- name: install the prerequisites package
+  yum:
+    name: 
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+- name: install docker
+  command: yum install -y --setopt=obsoletes=0 docker-ce-selinux-17.03.3.ce-1.el7.noarch docker-ce-17.03.3.ce-1.el7.x86_64
+
+- name: start/enable Docker
+  service:
+    name: docker
+    enabled: true
+    state: started
+
+- name: Add the user to the group of 'docker'
+  user:
+    name: ec2-user
+    comment: user
+    group: docker
+    append: true
+
+- name: restart docker service
+  service:
+    name: docker
+    state: started
+
+- name: verify if docker is installed
+  command: docker info
+  register: docker_info
+  changed_when: false

@@ -1,0 +1,11 @@
+---
+# tasks file for docker registry
+
+- name: initiate registry
+  import_tasks: initRegistry.yml
+
+- name: build and push backend image to repo
+  import_tasks: bckImage.yml
+
+- name: build and push frontend image to repo
+  import_tasks: frtImage.yml

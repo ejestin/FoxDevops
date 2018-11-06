@@ -1,0 +1,12 @@
+# technicalTestBack
+FROM golang:1.8
+
+WORKDIR /go/src/app
+COPY . .
+ENV MONGO_URI=mongodb:27017
+ENV S3_BUCKET=devops-test-foxintelligence
+ENV AWS_REGION=eu-central-1
+ENV AWS_SECRET_ACCESS_KEY={{ lookup('env','FOX_AWS_ACCESS_SECRET_KEY') }}
+ENV AWS_ACCESS_KEY_ID={{ lookup('env','FOX_AWS_ACCESS_KEY_ID') }}
+
+RUN go get
