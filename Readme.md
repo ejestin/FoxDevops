@@ -23,7 +23,7 @@ An AWS account able to instanciate EC2 instances and create a security group for
 
 ### Backend
 
-| Variable                              | Description             | TODO Default                            |
+| Variable                              | Description             | Default                            |
 | ------------------------------------ | ---------------        | --------------------------------- |
 | AWS_REGION | AWS region | eu-central-1 |
 | S3_BUCKET | S3 bucket | devops-test-foxintelligence |
