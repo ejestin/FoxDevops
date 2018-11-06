@@ -14,6 +14,11 @@ provider "aws" {
 variable "IPADDR" {}
 variable "KEYNAME" {}
 
+variable "WORKERS" {
+  default = "3"
+}
+
+
 
 # Create the Security Group
 resource "aws_security_group" "foxIntel_sg" {
@@ -148,7 +153,7 @@ resource "aws_instance" "Worker" {
   security_groups = ["${aws_security_group.foxIntel_sg.name}"]
 
   user_data = "yum -y update && yum -y install python2" # Python for Ansible
-  count     = 3 # Creates 3 workers 
+  count     = "${var.WORKERS}" # Creates WORKERS workers 
 
   # Need to be created after the manager, else Ansible won't be able to read inventory
   depends_on = ["aws_instance.Manager"]
