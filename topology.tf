@@ -12,6 +12,7 @@ provider "aws" {
 
 # Your IP Address
 variable "IPADDR" {}
+
 variable "KEYNAME" {}
 
 variable "WORKERS" {
@@ -121,7 +122,7 @@ data "aws_ami" "ec2" {
 # Creates the Manager
 resource "aws_instance" "Manager" {
   ami           = "${data.aws_ami.ec2.id}"
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
 
   tags {
     Name = "Manager"
@@ -131,7 +132,6 @@ resource "aws_instance" "Manager" {
   key_name = "${var.KEYNAME}"
 
   security_groups = ["${aws_security_group.foxIntel_sg.name}"]
-  user_data       = "yum -y update && yum -y install python2" # Python for Ansible
 
   provisioner "local-exec" { # Adds it to the ansible inventory
     command = "echo '[manager]\n${aws_instance.Manager.public_ip}\n[workers]'>Ansible/inventories/inv.ini"
@@ -141,7 +141,7 @@ resource "aws_instance" "Manager" {
 # Creates the Manager
 resource "aws_instance" "Worker" {
   ami           = "${data.aws_ami.ec2.id}"
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
 
   tags {
     Name = "Worker${count.index + 1}"
@@ -152,7 +152,6 @@ resource "aws_instance" "Worker" {
 
   security_groups = ["${aws_security_group.foxIntel_sg.name}"]
 
-  user_data = "yum -y update && yum -y install python2" # Python for Ansible
   count     = "${var.WORKERS}" # Creates WORKERS workers 
 
   # Need to be created after the manager, else Ansible won't be able to read inventory

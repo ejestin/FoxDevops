@@ -1,5 +1,5 @@
 # Deploy the provided application into the cluster
 - hosts: manager
   roles:
-    - docker registry
-    - docker services  
+    - docker_registry
+    - docker_services

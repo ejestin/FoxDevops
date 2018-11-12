@@ -4,9 +4,7 @@
 - name: Create Swarm manager
   command: docker swarm init --advertise-addr {{ ansible_eth0['ipv4']['address'] }}
   when: "docker_info.stdout.find('Swarm: inactive') != -1"
-  become: yes
 
 - name: Get swarm worker token
   command: docker swarm join-token -q worker
-  become: yes
   register: worker_token

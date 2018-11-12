@@ -1,8 +1,5 @@
 ---
 # tasks file for docker services
-
-
-
 - name: copy compose in place
   copy:
     src: docker-compose.yml
@@ -10,6 +7,3 @@
 
 - name: stack deploy
   command: docker stack deploy --compose-file=/usr/code/docker-compose.yml Foxy
-  become: yes
-
-

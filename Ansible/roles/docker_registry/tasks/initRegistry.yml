@@ -6,6 +6,5 @@
   register: countLines
 
 - name: create the registry
-  command: docker service create --name foxIntelRegistry --publish 5000:5000 registry:2 
+  command: docker service create --name foxIntelRegistry --publish 5000:5000 registry:2
   when: countLines.stdout|int < 10
-  become: yes

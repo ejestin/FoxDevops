@@ -6,4 +6,3 @@
   when: "docker_info.stdout.find('Swarm: inactive') != -1"
   retries: 3
   delay: 20
-  become: yes
